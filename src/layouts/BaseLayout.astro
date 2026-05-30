@@ -1,0 +1,54 @@
+---
+import '../global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  favicon?: string;
+  themeColor?: string;
+}
+
+const ga4Id = import.meta.env.PUBLIC_GA4_ID;
+
+const { title, description, ogImage, favicon, themeColor } = Astro.props;
+---
+
+<html lang="ko">
+  <head>
+    <!-- 필수 메타 -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    {themeColor && <meta name="theme-color" content={themeColor} />}
+    <link rel="canonical" href={Astro.url} />
+
+    <!-- 아이콘 -->
+    <link rel="icon" href={favicon ?? "/favicon.svg"} />
+
+    <!-- 폰트 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400..700&display=swap" />
+
+    <!-- GA4 (프로덕션만) -->
+    {ga4Id && import.meta.env.PROD && (
+      <>
+        <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${ga4Id}`}></script>
+        <script is:inline define:vars={{ ga4Id }}>
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag("js", new Date());
+          gtag("config", ga4Id);
+        </script>
+      </>
+    )}
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

@@ -1,0 +1,35 @@
+---
+interface Props {
+  videoid: string;
+  title?: string;
+  params?: string;
+  class?: string;
+}
+
+const defaultParams = 'rel=0&playsinline=1';
+const { videoid, title, params, class: className } = Astro.props;
+const mergedParams = params ? `${defaultParams}&${params}` : defaultParams;
+---
+
+<lite-youtube videoid={videoid} title={title} params={mergedParams} class={className}></lite-youtube>
+
+<script>
+  import "lite-youtube-embed/src/lite-yt-embed.js";
+</script>
+
+<style is:global>
+  @import "lite-youtube-embed/src/lite-yt-embed.css" layer(base);
+
+  @layer base {
+    lite-youtube {
+      max-width: none;
+      aspect-ratio: 16/9;
+    }
+    lite-youtube::after {
+      display: none;
+    }
+    lite-youtube > .lyt-playbtn {
+      filter: none;
+    }
+  }
+</style>

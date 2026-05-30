@@ -1,0 +1,143 @@
+@import "tailwindcss";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --font-sans: "Noto Sans KR", system-ui, sans-serif;
+
+  --color-surface: #f9f8fc;
+  --color-on-surface: #030304;
+  --color-on-surface-variant: #2e2d30;
+  --color-outline: #817f83;
+  --color-outline-variant: #dedde1;
+  --color-surface-container-lowest: #f2f1f5;
+  --color-surface-container-low: #efeef2;
+  --color-surface-container: #eceaef;
+  --color-surface-container-high: #e5e4e8;
+  --color-surface-container-highest: #dedde1;
+  --color-inverse-surface: #161518;
+  --color-inverse-on-surface: #efeef2;
+  --color-primary: #181222;
+  --color-on-primary: #fffbff;
+  --color-error: #bc010c;
+  --color-on-error: #fff;
+  --color-scrim: #000;
+}
+
+@utility text-display-lg {
+  font-size: 3.5rem;
+  line-height: 4rem;
+  font-weight: 400;
+}
+@utility text-display-md {
+  font-size: 2.75rem;
+  line-height: 3.25rem;
+  font-weight: 400;
+}
+@utility text-display-sm {
+  font-size: 2.25rem;
+  line-height: 2.75rem;
+  font-weight: 400;
+}
+@utility text-headline-lg {
+  font-size: 2rem;
+  line-height: 2.5rem;
+  font-weight: 400;
+}
+@utility text-headline-md {
+  font-size: 1.75rem;
+  line-height: 2.25rem;
+  font-weight: 400;
+}
+@utility text-headline-sm {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 400;
+}
+@utility text-title-lg {
+  font-size: 1.375rem;
+  line-height: 1.75rem;
+  font-weight: 400;
+}
+@utility text-title-md {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 500;
+}
+@utility text-title-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+}
+@utility text-body-lg {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 400;
+}
+@utility text-body-md {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 400;
+}
+@utility text-body-sm {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 400;
+}
+@utility text-label-lg {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+}
+@utility text-label-md {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+}
+@utility text-label-sm {
+  font-size: 0.6875rem;
+  line-height: 1rem;
+  font-weight: 500;
+}
+
+@layer base {
+  * {
+    scrollbar-width: thin;
+    @apply border-outline-variant outline-outline/50;
+  }
+  body {
+    @apply bg-surface text-on-surface;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .fade-in {
+    animation: fade-in-up ease both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 30%;
+  }
+}
+
+@supports not (animation-timeline: view()) {
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 600ms ease,
+      transform 600ms ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,80 @@
+---
+// Headless lightbox utility (PhotoSwipe).
+// Include once per page. Activates on [data-lightbox] images inside [data-section] galleries.
+// JS is lazy-loaded on first [data-lightbox] click.
+---
+
+<style is:global>
+  @import "photoswipe/style.css" layer(base);
+
+  .pswp__counter,
+  .pswp__button--zoom,
+  .pswp__button--close,
+  .pswp__button--arrow {
+    display: none;
+  }
+</style>
+
+<script>
+  let instance: Promise<any> | null = null;
+
+  function load() {
+    return (instance ??= init());
+  }
+
+  async function init() {
+    const [{ default: Lightbox }, { default: PhotoSwipe }] = await Promise.all([
+      import("photoswipe/lightbox"),
+      import("photoswipe"),
+    ]);
+
+    const lightbox = new Lightbox({
+      gallery: "[data-section]",
+      children: "[data-lightbox]",
+      showHideAnimationType: "none",
+      initialZoomLevel: (zl: { fit: number }) => Math.min(1, zl.fit),
+      secondaryZoomLevel: 1,
+      maxZoomLevel: 1,
+      tapAction: "close",
+      pswpModule: PhotoSwipe,
+    });
+
+    lightbox.addFilter("itemData", (itemData: Record<string, any>) => {
+      const el = itemData.element as HTMLImageElement | undefined;
+      if (el?.tagName === "IMG") {
+        itemData.src = el.src;
+        itemData.w = Number(el.getAttribute("width")) || el.naturalWidth || 1200;
+        itemData.h = Number(el.getAttribute("height")) || el.naturalHeight || 900;
+      }
+      return itemData;
+    });
+
+    const notifySection = () => {
+      const section = lightbox.pswp?.currSlide?.data?.element?.closest("[data-section]");
+      section?.dispatchEvent(new Event("lightbox:navigate"));
+    };
+    lightbox.on("firstUpdate", notifySection);
+    lightbox.on("change", notifySection);
+
+    lightbox.init();
+    return lightbox;
+  }
+
+  function handleClick(event: Event) {
+    const target = (event.target as Element).closest<HTMLElement>("[data-lightbox]");
+    if (!target) return;
+
+    const section = target.closest<HTMLElement>("[data-section]");
+    if (!section) return;
+
+    const index = [...section.querySelectorAll<HTMLElement>("[data-lightbox]")].indexOf(target);
+    if (index < 0) return;
+
+    load().then((lightbox) => {
+      lightbox.loadAndOpen(index, { gallery: section });
+      document.removeEventListener("click", handleClick);
+    });
+  }
+
+  document.addEventListener("click", handleClick);
+</script>

@@ -1,0 +1,60 @@
+---
+// Headless carousel (Embla).
+// Wraps [data-slot="carousel-viewport"] with swipe, counter chip, and snap alignment.
+// JS is lazy-loaded when a carousel enters the viewport.
+
+interface Props {
+  class?: string;
+  style?: string;
+}
+
+const { class: className, ...rest } = Astro.props;
+---
+
+<div data-slot="carousel" class:list={["@container", className]} {...rest}>
+  <slot />
+</div>
+
+<script>
+  let instance: Promise<typeof import("embla-carousel")> | null = null;
+
+  async function init(root: HTMLElement) {
+    const viewport = root.querySelector<HTMLElement>('[data-slot="carousel-viewport"]');
+    if (!viewport) return;
+
+    const { default: EmblaCarousel } = await (instance ??= import("embla-carousel"));
+    const api = EmblaCarousel(viewport, { align: "start", containScroll: "trimSnaps" });
+
+    const total = api.scrollSnapList().length;
+    const counter = document.createElement("span");
+    counter.className =
+      "text-label-sm absolute bottom-1 right-1 rounded-full bg-scrim/60 px-2 py-0.5 text-inverse-on-surface";
+    viewport.classList.add("relative");
+    viewport.appendChild(counter);
+
+    const update = () => {
+      counter.textContent = `${api.selectedScrollSnap() + 1} / ${total}`;
+    };
+    api.on("select", update);
+    update();
+
+    requestAnimationFrame(() => {
+      api.on("select", () => root.dispatchEvent(new Event("carousel:navigate")));
+    });
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        observer.unobserve(entry.target);
+        init(entry.target as HTMLElement);
+      }
+    },
+    { rootMargin: "200px" },
+  );
+
+  for (const root of document.querySelectorAll<HTMLElement>('[data-slot="carousel"]')) {
+    observer.observe(root);
+  }
+</script>
