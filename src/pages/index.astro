@@ -23,6 +23,8 @@ import roomFridge from "@/images/room-fridge.webp";
 import roomFront from "@/images/room-front.webp";
 import roomTable from "@/images/room-table.webp";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import deluxe1 from "@/images/deluxe1.jpg";
+import deluxe2 from "@/images/deluxe2.jpg";
 
 type VideoSlide = { video: string; title: string; class?: string };
 type ImageSlide = { image: ImageMetadata; alt: string; class?: string };
@@ -298,7 +300,31 @@ const imageSlideClass = `${slideClass} [&_img]:size-full [&_img]:object-cover [&
       }
     </section>
 
-    <!-- ==================== 4. 냉난방 (임팩트) ==================== -->
+    <!-- ==================== 4. 디럭스룸 (정보) ==================== -->
+    <section data-section="디럭스룸" class="px-5 py-16">
+      <h3 class="fade-in text-headline-md mb-2 font-bold">두배가 넘는 크기의 디럭스 룸도 있습니다.</h3>
+      <p class="fade-in text-body-md text-on-surface-variant mb-6">보증금 10만원 · 월 50만원</p>
+      <div class="fade-in grid grid-cols-2 gap-3">
+        <Image
+          src={deluxe1}
+          alt="디럭스룸 1"
+          widths={[320, 540]}
+          sizes="(min-width: 800px) 380px, 45vw"
+          data-lightbox
+          class="w-full rounded-xl object-cover"
+        />
+        <Image
+          src={deluxe2}
+          alt="디럭스룸 2"
+          widths={[320, 540]}
+          sizes="(min-width: 800px) 380px, 45vw"
+          data-lightbox
+          class="w-full rounded-xl object-cover"
+        />
+      </div>
+    </section>
+
+    <!-- ==================== 5. 냉난방 (임팩트) ==================== -->
     <section data-section="냉난방" class="px-5 py-24 text-center">
       <h2 class="fade-in text-headline-lg mb-12 font-bold">
         여름엔 시원하고,
@@ -315,7 +341,7 @@ const imageSlideClass = `${slideClass} [&_img]:size-full [&_img]:object-cover [&
       </p>
     </section>
 
-    <!-- ==================== 5. 비교표 (정보) ==================== -->
+    <!-- ==================== 6. 비교표 (정보) ==================== -->
     <section data-section="비교표" class="px-5 py-16">
       <h2 class="fade-in text-headline-md mb-8 font-bold">같은 35만원, 이만큼 다릅니다.</h2>
       <p class="fade-in text-body-sm text-on-surface-variant -mt-5 mb-8">디럭스룸은 별도 고지 금액</p>
@@ -347,7 +373,7 @@ const imageSlideClass = `${slideClass} [&_img]:size-full [&_img]:object-cover [&
       </p>
     </section>
 
-    <!-- ==================== 6. 위치 (정보) ==================== -->
+    <!-- ==================== 7. 위치 (정보) ==================== -->
     <section data-section="위치" class="px-5 py-16">
       <h2 class="fade-in text-headline-md mb-8 font-bold">역까지 진짜 5분?</h2>
       <div class="fade-in mb-4 overflow-hidden rounded-xl">
@@ -386,7 +412,7 @@ const imageSlideClass = `${slideClass} [&_img]:size-full [&_img]:object-cover [&
       </p>
     </section>
 
-    <!-- ==================== 7. 운영 원칙 (임팩트) ==================== -->
+    <!-- ==================== 8. 운영 원칙 (임팩트) ==================== -->
     <section data-section="운영원칙" class="px-5 py-24">
       <h2 class="fade-in text-headline-md mb-12 font-bold">이런 기준으로 운영하고 있어요</h2>
       <ul class="text-body-lg space-y-4">
@@ -420,7 +446,7 @@ const imageSlideClass = `${slideClass} [&_img]:size-full [&_img]:object-cover [&
       </p>
     </section>
 
-    <!-- ==================== 8. FAQ (정보) ==================== -->
+    <!-- ==================== 9. FAQ (정보) ==================== -->
     <section data-section="FAQ" class="px-5 py-16">
       <h2 class="text-headline-md mb-8 font-bold">자주 묻는 질문</h2>
       {
@@ -464,7 +490,7 @@ const imageSlideClass = `${slideClass} [&_img]:size-full [&_img]:object-cover [&
       }
     </section>
 
-    <!-- ==================== 9. 하단 안내 + 푸터 ==================== -->
+    <!-- ==================== 10. 하단 안내 + 푸터 ==================== -->
     <section
       id="contact"
       data-section="하단안내"
